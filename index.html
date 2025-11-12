@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
-    <!-- SEO Meta Tags (from your previous version) -->
+    <!-- SEO Meta Tags -->
     <meta name="description" content="Portfolio of Aaron Pascal Kujur, a Computer Science student and Full Stack Developer specializing in MERN stack, Data Structures, and Java. View my projects and resume.">
     <meta name="keywords" content="Aaron Pascal Kujur, Full Stack Developer, Computer Science Student, Software Engineer Intern, Web Developer Portfolio, Java, React, Student Portfolio">
     <meta name="author" content="Aaron Pascal Kujur">
@@ -13,7 +13,7 @@
     
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfolio | Student Developer</title>
+    <title>Aaron Pascal Kujur | Portfolio</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -21,23 +21,26 @@
             darkMode: 'class',
             theme: {
                 extend: {
+                    // NEW: All colors now use CSS variables for theming
                     colors: {
-                        primary: '#3b82f6', // Blue-500 (Stays vibrant)
-                        secondary: '#8b5cf6', // Purple-500 (Stays vibrant)
+                        primary: 'rgb(var(--color-primary) / <alpha-value>)',
+                        secondary: 'rgb(var(--color-secondary) / <alpha-value>)',
                         
-                        // Light Theme Palette
-                        light: '#f8fafc',    // Slate-50 (Very light gray for backgrounds)
-                        white: '#ffffff',    // White (For cards and main bg)
-                        card: '#ffffff',     // Card background
-                        text: '#1e293b',     // Slate-800 (Dark text for readability)
-                        muted: '#64748b',    // Slate-500 (Lighter text)
-
-                        // Dark Theme Palette
-                        dark: '#0f172a',    // Slate-900
-                        darker: '#020617',  // Slate-950
-                        'dark-card': '#1e293b',    // Slate-800
-                        'dark-text': '#e2e8f0',    // Slate-200
-                        'dark-muted': '#94a3b8',   // Slate-400
+                        // Main Theme Palette
+                        'theme-light': 'rgb(var(--color-bg-light) / <alpha-value>)',
+                        'theme-white': 'rgb(var(--color-bg-white) / <alpha-value>)',
+                        'theme-card': 'rgb(var(--color-card) / <alpha-value>)',
+                        'theme-text': 'rgb(var(--color-text) / <alpha-value>)',
+                        'theme-muted': 'rgb(var(--color-text-muted) / <alpha-value>)',
+                        'theme-border': 'rgb(var(--color-border) / <alpha-value>)',
+                        
+                        // Dark Mode Palette
+                        'theme-dark': 'rgb(var(--color-bg-dark) / <alpha-value>)',
+                        'theme-darker': 'rgb(var(--color-bg-darker) / <alpha-value>)',
+                        'theme-dark-card': 'rgb(var(--color-card-dark) / <alpha-value>)',
+                        'theme-dark-text': 'rgb(var(--color-text-dark) / <alpha-value>)',
+                        'theme-dark-muted': 'rgb(var(--color-text-muted-dark) / <alpha-value>)',
+                        'theme-dark-border': 'rgb(var(--color-border-dark) / <alpha-value>)',
                     },
                     fontFamily: {
                         sans: ['Inter', 'sans-serif'],
@@ -58,14 +61,21 @@
         }
     </script>
     
-    <!-- Dark Mode Toggle Script -->
+    <!-- Dark Mode & Theme Scripts -->
     <script>
         // On page load or when changing themes, check localStorage and OS preference
-        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-            document.documentElement.classList.add('dark');
-        } else {
-            document.documentElement.classList.remove('dark');
+        function applyInitialTheme() {
+            // Dark Mode
+            if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+            // Color Theme
+            const savedColorTheme = localStorage.getItem('color-theme') || 'blue';
+            document.documentElement.setAttribute('data-theme', savedColorTheme);
         }
+        applyInitialTheme();
 
         // Function to toggle dark mode
         function toggleDarkMode() {
@@ -78,16 +88,98 @@
                 localStorage.theme = 'dark';
             }
         }
+
+        // NEW: Function to set color theme
+        function setTheme(theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+            localStorage.setItem('color-theme', theme);
+            // Close the dropdown after selection
+            const dropdown = document.getElementById('theme-dropdown');
+            if (dropdown) dropdown.classList.add('hidden');
+        }
+
+        // NEW: Function to toggle the theme dropdown
+        function toggleThemeDropdown() {
+            document.getElementById('theme-dropdown').classList.toggle('hidden');
+        }
     </script>
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- NEW: Style block for CSS Variable Theming -->
     <style>
+        /* ------------------- */
+        /* --- BLUE THEME --- */
+        /* ------------------- */
+        :root[data-theme="blue"],
+        :root:not([data-theme]) { /* Fallback for default */
+            --color-primary: 59 130 246; /* blue-500 */
+            --color-secondary: 139 92 246; /* purple-500 */
+            /* Light Mode */
+            --color-bg-light: 248 250 252;    /* slate-50 */
+            --color-bg-white: 255 255 255;    /* white */
+            --color-card: 255 255 255;       /* white */
+            --color-text: 30 41 59;        /* slate-800 */
+            --color-text-muted: 100 116 139;  /* slate-500 */
+            --color-border: 226 232 240;      /* slate-200 */
+            /* Dark Mode */
+            --color-bg-dark: 15 23 42;         /* slate-900 */
+            --color-bg-darker: 2 6 23;        /* slate-950 */
+            --color-card-dark: 30 41 59;       /* slate-800 */
+            --color-text-dark: 226 232 240;    /* slate-200 */
+            --color-text-muted-dark: 148 163 184; /* slate-400 */
+            --color-border-dark: 48 63 86;       /* slate-700 */
+        }
+
+        /* ----------------- */
+        /* --- RED THEME --- */
+        /* ----------------- */
+        :root[data-theme="red"] {
+            --color-primary: 239 68 68; /* red-500 */
+            --color-secondary: 249 115 22; /* orange-500 */
+            /* Light Mode */
+            --color-bg-light: 254 242 242;    /* red-50 */
+            --color-bg-white: 255 250 250;    /* rose-50 */
+            --color-card: 255 255 255;       /* white */
+            --color-text: 124 28 28;       /* red-900 */
+            --color-text-muted: 185 28 28;     /* red-700 */
+            --color-border: 254 202 202;      /* red-200 */
+            /* Dark Mode */
+            --color-bg-dark: 41 13 13;         /* dark-red-900 */
+            --color-bg-darker: 30 7 7;        /* dark-red-950 */
+            --color-card-dark: 69 10 10;       /* dark-red-800 */
+            --color-text-dark: 254 226 226;    /* red-100 */
+            --color-text-muted-dark: 252 165 165; /* red-300 */
+            --color-border-dark: 127 29 29;      /* red-800 */
+        }
+
+        /* ------------------- */
+        /* --- GREEN THEME --- */
+        /* ------------------- */
+        :root[data-theme="green"] {
+            --color-primary: 34 197 94; /* green-500 */
+            --color-secondary: 20 184 166; /* teal-500 */
+            /* Light Mode */
+            --color-bg-light: 240 253 244;    /* green-50 */
+            --color-bg-white: 252 253 252;    /* neutral-50 */
+            --color-card: 255 255 255;       /* white */
+            --color-text: 20 83 45;        /* green-900 */
+            --color-text-muted: 21 128 61;     /* green-700 */
+            --color-border: 187 247 208;      /* green-200 */
+            /* Dark Mode */
+            --color-bg-dark: 12 32 19;         /* dark-green-900 */
+            --color-bg-darker: 7 20 11;        /* dark-green-950 */
+            --color-card-dark: 16 57 32;       /* dark-green-800 */
+            --color-text-dark: 220 252 231;    /* green-100 */
+            --color-text-muted-dark: 134 239 172; /* green-300 */
+            --color-border-dark: 22 101 52;      /* green-800 */
+        }
+
+
         body {
             font-family: 'Inter', sans-serif;
-            /* Default light mode colors */
-            background-color: #f8fafc; 
-            color: #1e293b; 
+            /* Colors are now set by the theme-prefixed classes */
         }
         /* Scrollbar styles for light mode */
         ::-webkit-scrollbar { width: 8px; }
@@ -101,152 +193,197 @@
         .dark::-webkit-scrollbar-thumb:hover { background: #475569; }
 
         .glass-nav {
-            /* Light glass effect */
             background: rgba(255, 255, 255, 0.85); 
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
         }
         .dark .glass-nav {
-            /* Dark glass effect */
             background: rgba(15, 23, 42, 0.85); 
         }
+        /* Update glass nav to respect theming */
+        .glass-nav {
+            background: rgb(var(--color-bg-white) / 0.85);
+        }
+        .dark .glass-nav {
+            background: rgb(var(--color-bg-dark) / 0.85);
+        }
+
 
         .text-gradient {
-            background: linear-gradient(to right, #3b82f6, #8b5cf6); /* Gradient remains vibrant */
+            /* Gradient now uses the CSS variables */
+            background: linear-gradient(to right, rgb(var(--color-primary)), rgb(var(--color-secondary)));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
+
+        /* REMOVED Side Nav Scroll-Spy Styles */
     </style>
 </head>
-<body class="antialiased selection:bg-primary selection:text-white bg-light text-text dark:bg-darker dark:text-dark-text transition-colors duration-300">
+<body class="antialiased selection:bg-primary selection:text-white bg-theme-light text-theme-text dark:bg-theme-darker dark:text-theme-dark-text transition-colors duration-300">
 
     <!-- Navigation -->
-    <nav class="fixed w-full z-50 glass-nav border-b border-gray-200/75 dark:border-slate-800/50">
+    <nav class="fixed w-full z-50 glass-nav border-b border-theme-border/75 dark:border-theme-dark-border/50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16">
-                <div class="flex-shrink-0 text-xl font-bold tracking-tight text-slate-900 dark:text-white">
+                <div class="flex-shrink-0 text-xl font-bold tracking-tight text-theme-text dark:text-theme-dark-text">
                     &lt;Dev<span class="text-primary">/</span>&gt;
                 </div>
                 <div class="hidden md:block">
                     <div class="ml-10 flex items-center space-x-8">
-                        <a href="#home" class="text-gray-600 dark:text-dark-muted hover:text-primary transition-colors px-3 py-2 rounded-md text-sm font-medium">Home</a>
-                        <a href="#skills" class="text-gray-600 dark:text-dark-muted hover:text-primary transition-colors px-3 py-2 rounded-md text-sm font-medium">Skills</a>
-                        <a href="#projects" class="text-gray-600 dark:text-dark-muted hover:text-primary transition-colors px-3 py-2 rounded-md text-sm font-medium">Projects</a>
-                        <a href="#education" class="text-gray-600 dark:text-dark-muted hover:text-primary transition-colors px-3 py-2 rounded-md text-sm font-medium">Education</a>
-                        <a href="#coding-profiles" class="text-gray-600 dark:text-dark-muted hover:text-primary transition-colors px-3 py-2 rounded-md text-sm font-medium">Coding Stats</a>
+                        <a href="#home" class="text-theme-muted dark:text-theme-dark-muted hover:text-primary transition-colors px-3 py-2 rounded-md text-sm font-medium">Home</a>
+                        <a href="#skills" class="text-theme-muted dark:text-theme-dark-muted hover:text-primary transition-colors px-3 py-2 rounded-md text-sm font-medium">Skills</a>
+                        <a href="#projects" class="text-theme-muted dark:text-theme-dark-muted hover:text-primary transition-colors px-3 py-2 rounded-md text-sm font-medium">Projects</a>
+                        <a href="#education" class="text-theme-muted dark:text-theme-dark-muted hover:text-primary transition-colors px-3 py-2 rounded-md text-sm font-medium">Education</a>
+                        <a href="#coding-profiles" class="text-theme-muted dark:text-theme-dark-muted hover:text-primary transition-colors px-3 py-2 rounded-md text-sm font-medium">Coding Stats</a>
+                        <a href="#contact" class="text-theme-muted dark:text-theme-dark-muted hover:text-primary transition-colors px-3 py-2 rounded-md text-sm font-medium">Contact</a>
                     </div>
                 </div>
                 <div class="hidden md:flex items-center gap-4">
+                     
+                     <!-- Theme Changer Dropdown -->
+                     <div class="relative">
+                        <button onclick="toggleThemeDropdown()" class="text-theme-muted dark:text-theme-dark-muted hover:text-primary transition-colors w-10 h-10 flex items-center justify-center rounded-lg hover:bg-theme-light dark:hover:bg-theme-dark">
+                            <i class="fas fa-palette text-lg"></i>
+                        </button>
+                        <!-- Dropdown Menu -->
+                        <div id="theme-dropdown" class="hidden absolute right-0 mt-2 w-32 bg-theme-white dark:bg-theme-dark-card border border-theme-border dark:border-theme-dark-border rounded-lg shadow-lg py-1 z-50">
+                            <button onclick="setTheme('blue')" class="w-full text-left px-4 py-2 text-sm text-theme-text dark:text-theme-dark-text hover:bg-theme-light dark:hover:bg-theme-dark flex items-center gap-2">
+                                <span class="w-4 h-4 rounded-full bg-blue-500 border border-slate-400"></span> Blue
+                            </button>
+                            <button onclick="setTheme('red')" class="w-full text-left px-4 py-2 text-sm text-theme-text dark:text-theme-dark-text hover:bg-theme-light dark:hover:bg-theme-dark flex items-center gap-2">
+                                <span class="w-4 h-4 rounded-full bg-red-500 border border-slate-400"></span> Red
+                            </button>
+                            <button onclick="setTheme('green')" class="w-full text-left px-4 py-2 text-sm text-theme-text dark:text-theme-dark-text hover:bg-theme-light dark:hover:bg-theme-dark flex items-center gap-2">
+                                <span class="w-4 h-4 rounded-full bg-green-500 border border-slate-400"></span> Green
+                            </button>
+                        </div>
+                     </div>
+
                      <!-- Dark Mode Toggle -->
-                     <button onclick="toggleDarkMode()" id="theme-toggle" class="relative flex items-center w-12 h-6 rounded-full bg-gray-200 dark:bg-slate-700 p-1 focus:outline-none transition-colors">
-                        <span class="absolute left-0.5 top-0.5 w-5 h-5 bg-white rounded-full shadow-md transition-transform duration-300 transform dark:translate-x-6 flex items-center justify-center">
+                     <button onclick="toggleDarkMode()" id="theme-toggle" class="relative flex items-center w-12 h-6 rounded-full bg-theme-border dark:bg-theme-dark-border p-1 focus:outline-none transition-colors">
+                        <span class="absolute left-0.5 top-0.5 w-5 h-5 bg-theme-white rounded-full shadow-md transition-transform duration-300 transform dark:translate-x-6 flex items-center justify-center">
                             <i class="fas fa-sun text-yellow-500 text-xs transition-opacity duration-300 opacity-100 dark:opacity-0"></i>
                             <i class="fas fa-moon text-blue-500 text-xs transition-opacity duration-300 opacity-0 dark:opacity-100 absolute"></i>
                         </span>
                      </button>
-                     <a href="#" class="bg-primary hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-all">
+                     <a href="#" class="bg-primary hover:opacity-80 text-white px-4 py-2 rounded-lg text-sm font-medium transition-all">
                         <i class="fas fa-download mr-2"></i>Resume
                     </a>
                 </div>
                 <!-- Mobile menu button -->
                 <div class="md:hidden flex items-center gap-4">
                      <!-- Mobile Dark Mode Toggle -->
-                     <button onclick="toggleDarkMode()" id="theme-toggle-mobile-icon" class="relative flex items-center w-12 h-6 rounded-full bg-gray-200 dark:bg-slate-700 p-1 focus:outline-none transition-colors">
-                        <span class="absolute left-0.5 top-0.5 w-5 h-5 bg-white rounded-full shadow-md transition-transform duration-300 transform dark:translate-x-6 flex items-center justify-center">
+                     <button onclick="toggleDarkMode()" id="theme-toggle-mobile-icon" class="relative flex items-center w-12 h-6 rounded-full bg-theme-border dark:bg-theme-dark-border p-1 focus:outline-none transition-colors">
+                        <span class="absolute left-0.5 top-0.5 w-5 h-5 bg-theme-white rounded-full shadow-md transition-transform duration-300 transform dark:translate-x-6 flex items-center justify-center">
                             <i class="fas fa-sun text-yellow-500 text-xs transition-opacity duration-300 opacity-100 dark:opacity-0"></i>
                             <i class="fas fa-moon text-blue-500 text-xs transition-opacity duration-300 opacity-0 dark:opacity-100 absolute"></i>
                         </span>
                      </button>
-                    <button type="button" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')" class="text-gray-700 dark:text-gray-300 hover:text-slate-900 dark:hover:text-white focus:outline-none">
+                    <button type="button" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')" class="text-theme-text dark:text-theme-dark-muted hover:text-primary dark:hover:text-white focus:outline-none">
                         <i class="fas fa-bars text-2xl"></i>
                     </button>
                 </div>
             </div>
         </div>
         <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden md:hidden bg-white dark:bg-darker border-b border-gray-200 dark:border-slate-800">
+        <div id="mobile-menu" class="hidden md:hidden bg-theme-white dark:bg-theme-darker border-b border-theme-border dark:border-theme-dark-border">
             <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-                <a href="#home" class="text-gray-700 dark:text-dark-text hover:bg-gray-100 dark:hover:bg-slate-800 block px-3 py-2 rounded-md text-base font-medium">Home</a>
-                <a href="#skills" class="text-gray-700 dark:text-dark-text hover:bg-gray-100 dark:hover:bg-slate-800 block px-3 py-2 rounded-md text-base font-medium">Skills</a>
-                <a href="#projects" class="text-gray-700 dark:text-dark-text hover:bg-gray-100 dark:hover:bg-slate-800 block px-3 py-2 rounded-md text-base font-medium">Projects</a>
-                <a href="#education" class="text-gray-700 dark:text-dark-text hover:bg-gray-100 dark:hover:bg-slate-800 block px-3 py-2 rounded-md text-base font-medium">Education</a>
-                <a href="#coding-profiles" class="text-gray-700 dark:text-dark-text hover:bg-gray-100 dark:hover:bg-slate-800 block px-3 py-2 rounded-md text-base font-medium">Coding Stats</a>
-                <a href="#" class="mt-2 block w-full text-center bg-primary hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-base font-medium transition-all">
+                <a href="#home" class="text-theme-text dark:text-theme-dark-text hover:bg-theme-light dark:hover:bg-theme-dark block px-3 py-2 rounded-md text-base font-medium">Home</a>
+                <a href="#skills" class="text-theme-text dark:text-theme-dark-text hover:bg-theme-light dark:hover:bg-theme-dark block px-3 py-2 rounded-md text-base font-medium">Skills</a>
+                <a href="#projects" class="text-theme-text dark:text-theme-dark-text hover:bg-theme-light dark:hover:bg-theme-dark block px-3 py-2 rounded-md text-base font-medium">Projects</a>
+                <a href="#education" class="text-theme-text dark:text-theme-dark-text hover:bg-theme-light dark:hover:bg-theme-dark block px-3 py-2 rounded-md text-base font-medium">Education</a>
+                <a href="#coding-profiles" class="text-theme-text dark:text-theme-dark-text hover:bg-theme-light dark:hover:bg-theme-dark block px-3 py-2 rounded-md text-base font-medium">Coding Stats</a>
+                <a href="#contact" class="text-theme-text dark:text-theme-dark-text hover:bg-theme-light dark:hover:bg-theme-dark block px-3 py-2 rounded-md text-base font-medium">Contact</a>
+                <a href="#" class="mt-2 block w-full text-center bg-primary hover:opacity-80 text-white px-4 py-2 rounded-lg text-base font-medium transition-all">
                     <i class="fas fa-download mr-2"></i>Download Resume
                 </a>
+                <!-- Mobile Theme Changer -->
+                 <div class="px-3 pt-3">
+                    <label class="text-sm font-medium text-theme-text dark:text-theme-dark-text">Change Theme</label>
+                    <div class="flex gap-3 mt-2">
+                         <button onclick="setTheme('blue')" class="w-8 h-8 rounded-full bg-blue-500 border-2 border-slate-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"></button>
+                         <button onclick="setTheme('red')" class="w-8 h-8 rounded-full bg-red-500 border-2 border-slate-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"></button>
+                         <button onclick="setTheme('green')" class="w-8 h-8 rounded-full bg-green-500 border-2 border-slate-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"></button>
+                    </div>
+                 </div>
             </div>
         </div>
     </nav>
 
+    <!-- REMOVED Side Dot Navigation -->
+
     <!-- Hero Section -->
-    <section id="home" class="min-h-screen flex items-center justify-center pt-16 relative overflow-hidden bg-white dark:bg-dark">
+    <section id="home" class="min-h-screen flex items-center justify-center pt-16 relative overflow-hidden bg-theme-white dark:bg-theme-dark">
         <!-- Blobs are lighter and blend differently -->
-        <div class="absolute top-20 left-10 w-72 h-72 bg-blue-300 rounded-full filter blur-3xl opacity-30 dark:opacity-10 dark:mix-blend-multiply animate-blob"></div>
-        <div class="absolute top-40 right-10 w-72 h-72 bg-purple-300 rounded-full filter blur-3xl opacity-30 dark:opacity-10 dark:mix-blend-multiply animate-blob animation-delay-2000"></div>
+        <div class="absolute top-20 left-10 w-72 h-72 bg-primary/20 rounded-full filter blur-3xl opacity-50 dark:opacity-10 dark:mix-blend-multiply animate-blob"></div>
+        <div class="absolute top-40 right-10 w-72 h-72 bg-secondary/20 rounded-full filter blur-3xl opacity-50 dark:opacity-10 dark:mix-blend-multiply animate-blob animation-delay-2000"></div>
 
         <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-            <div class="inline-flex items-center px-3 py-1 rounded-full border border-gray-200 dark:border-slate-700 bg-white/50 dark:bg-slate-800/50 text-sm text-primary mb-6 backdrop-blur-sm shadow-sm">
+            <div class="inline-flex items-center px-3 py-1 rounded-full border border-theme-border dark:border-theme-dark-border bg-theme-white/50 dark:bg-theme-dark-card/50 text-sm text-primary mb-6 backdrop-blur-sm shadow-sm">
                 <span class="flex h-2 w-2 rounded-full bg-green-500 mr-2 animate-pulse"></span>
                 Open to Internships & Summer 2025 Roles
             </div>
             
-            <h1 class="text-5xl md:text-7xl font-bold tracking-tight text-slate-900 dark:text-white mb-6">
+            <h1 class="text-5xl md:text-7xl font-bold tracking-tight text-theme-text dark:text-theme-dark-text mb-6">
                 Building the <br>
                 <span class="text-gradient">Future with Code.</span>
             </h1>
             
-            <p class="mt-4 text-xl text-muted dark:text-dark-muted max-w-2xl mx-auto">
+            <p class="mt-4 text-xl text-theme-muted dark:text-theme-dark-muted max-w-2xl mx-auto">
                 I'm a Computer Science undergrad passionate about Full Stack Development and Data Structures. I turn complex problems into clean, scalable code.
             </p>
             
             <div class="mt-10 flex flex-col sm:flex-row justify-center gap-4">
-                <a href="#projects" class="px-8 py-4 bg-primary hover:bg-blue-700 text-white rounded-lg font-medium transition-all shadow-lg shadow-blue-500/25">
+                <a href="#projects" class="px-8 py-4 bg-primary hover:opacity-80 text-white rounded-lg font-medium transition-all shadow-lg shadow-primary/25">
                     View My Work
                 </a>
-                <a href="https://github.com/aaronpascalkujur" target="_blank" class="px-8 py-4 bg-white dark:bg-slate-800 hover:bg-gray-100 dark:hover:bg-slate-700 text-slate-800 dark:text-white rounded-lg font-medium transition-all border border-gray-300 dark:border-slate-700 flex items-center justify-center gap-2 shadow-sm">
+                <a href="https://github.com/aaronpascalkujur" target="_blank" class="px-8 py-4 bg-theme-white dark:bg-theme-dark-card hover:bg-theme-light dark:hover:bg-theme-dark text-theme-text dark:text-theme-dark-text rounded-lg font-medium transition-all border border-theme-border dark:border-theme-dark-border flex items-center justify-center gap-2 shadow-sm">
                     <i class="fab fa-github text-xl"></i> GitHub Profile
+                </a>
+                <a href="https://linkedin.com/in/your-profile" target="_blank" class="px-8 py-4 bg-theme-white dark:bg-theme-dark-card hover:bg-theme-light dark:hover:bg-theme-dark text-theme-text dark:text-theme-dark-text rounded-lg font-medium transition-all border border-theme-border dark:border-theme-dark-border flex items-center justify-center gap-2 shadow-sm">
+                    <i class="fab fa-linkedin text-xl text-blue-600"></i> LinkedIn Profile
                 </a>
             </div>
 
             <!-- Quick Stats Row -->
-            <div class="mt-16 grid grid-cols-2 md:grid-cols-4 gap-4 border-t border-gray-200 dark:border-slate-800 pt-8">
+            <div class="mt-16 grid grid-cols-2 md:grid-cols-4 gap-4 border-t border-theme-border dark:border-theme-dark-border pt-8">
                 <div class="p-4">
-                    <div class="text-3xl font-bold text-slate-900 dark:text-white">200+</div>
-                    <div class="text-sm text-muted dark:text-dark-muted">LeetCode Problems</div>
+                    <div class="text-3xl font-bold text-theme-text dark:text-theme-dark-text">200+</div>
+                    <div class="text-sm text-theme-muted dark:text-theme-dark-muted">LeetCode Problems</div>
                 </div>
                 <div class="p-4">
-                    <div class="text-3xl font-bold text-slate-900 dark:text-white">5+</div>
-                    <div class="text-sm text-muted dark:text-dark-muted">Projects Built</div>
+                    <div class="text-3xl font-bold text-theme-text dark:text-theme-dark-text">5+</div>
+                    <div class="text-sm text-theme-muted dark:text-theme-dark-muted">Projects Built</div>
                 </div>
                 <div class="p-4">
-                    <div class="text-3xl font-bold text-slate-900 dark:text-white">3.8</div>
-                    <div class="text-sm text-muted dark:text-dark-muted">Current CGPA</div>
+                    <div class="text-3xl font-bold text-theme-text dark:text-theme-dark-text">3.8</div>
+                    <div class="text-sm text-theme-muted dark:text-theme-dark-muted">Current CGPA</div>
                 </div>
                 <div class="p-4">
-                    <div class="text-3xl font-bold text-slate-900 dark:text-white">2nd</div>
-                    <div class="text-sm text-muted dark:text-dark-muted">Hackathon Winner</div>
+                    <div class="text-3xl font-bold text-theme-text dark:text-theme-dark-text">2nd</div>
+                    <div class="text-sm text-theme-muted dark:text-theme-dark-muted">Hackathon Winner</div>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Coding Profiles Section -->
-    <section id="coding-profiles" class="py-20 bg-light dark:bg-darker">
+    <section id="coding-profiles" class="py-20 bg-theme-light dark:bg-theme-darker">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-8 flex items-center">
+            <h2 class="text-3xl font-bold text-theme-text dark:text-theme-dark-text mb-8 flex items-center">
                 <i class="fas fa-code text-primary mr-3"></i> Coding Profiles
             </h2>
-            <p class="text-muted dark:text-dark-muted mb-12 max-w-2xl">
+            <p class="text-theme-muted dark:text-theme-dark-muted mb-12 max-w-2xl">
                 Consistency is key. Here is a snapshot of my problem-solving journey across various platforms.
             </p>
 
             <div class="grid md:grid-cols-3 gap-6">
                 <!-- LeetCode Card -->
-                <div class="bg-white dark:bg-dark-card p-6 rounded-xl border border-gray-200 dark:border-slate-800 hover:border-yellow-500/50 transition-all group shadow-md dark:shadow-none hover:shadow-xl dark:hover:border-yellow-500/50">
+                <div class="bg-theme-card dark:bg-theme-dark-card p-6 rounded-xl border border-theme-border dark:border-theme-dark-border hover:border-yellow-500/50 transition-all group shadow-md dark:shadow-none hover:shadow-xl dark:hover:border-yellow-500/50">
                     <div class="flex justify-between items-start mb-4">
                         <div>
-                            <h3 class="text-lg font-bold text-slate-900 dark:text-white group-hover:text-yellow-600 dark:group-hover:text-yellow-500 transition-colors">LeetCode</h3>
-                            <p class="text-sm text-muted dark:text-dark-muted">Max Rating: 1550</p>
+                            <h3 class="text-lg font-bold text-theme-text dark:text-theme-dark-text group-hover:text-yellow-600 dark:group-hover:text-yellow-500 transition-colors">LeetCode</h3>
+                            <p class="text-sm text-theme-muted dark:text-theme-dark-muted">Max Rating: 1550</p>
                         </div>
                         <div class="bg-yellow-500/10 p-3 rounded-lg text-yellow-600 dark:text-yellow-500">
                             <i class="fas fa-code"></i>
@@ -254,30 +391,30 @@
                     </div>
                     <div class="space-y-3">
                         <div class="flex justify-between text-sm">
-                            <span class="text-slate-500 dark:text-dark-muted">Easy</span>
+                            <span class="text-theme-muted dark:text-theme-dark-muted">Easy</span>
                             <span class="text-green-600 font-mono">80</span>
                         </div>
                         <div class="flex justify-between text-sm">
-                            <span class="text-slate-500 dark:text-dark-muted">Medium</span>
+                            <span class="text-theme-muted dark:text-theme-dark-muted">Medium</span>
                             <span class="text-yellow-600 dark:text-yellow-500 font-mono">110</span>
                         </div>
                         <div class="flex justify-between text-sm">
-                            <span class="text-slate-500 dark:text-dark-muted">Hard</span>
+                            <span class="text-theme-muted dark:text-theme-dark-muted">Hard</span>
                             <span class="text-red-600 font-mono">15</span>
                         </div>
-                        <div class="w-full bg-gray-200 dark:bg-slate-700 h-2 rounded-full overflow-hidden mt-2">
+                        <div class="w-full bg-theme-border dark:bg-theme-dark-border h-2 rounded-full overflow-hidden mt-2">
                             <div class="bg-yellow-500 h-full" style="width: 65%"></div>
                         </div>
                     </div>
-                    <a href="https://leetcode.com" target="_blank" class="mt-6 block w-full text-center py-2 rounded border border-gray-300 dark:border-slate-700 text-sm hover:bg-gray-100 dark:hover:bg-slate-700 dark:text-dark-text transition-colors">View Profile</a>
+                    <a href="https://leetcode.com/u/aaronpascalkujur/" target="_blank" class="mt-6 block w-full text-center py-2 rounded border border-theme-border dark:border-theme-dark-border text-sm text-theme-text dark:text-theme-dark-text hover:bg-theme-light dark:hover:bg-theme-dark transition-colors">View Profile</a>
                 </div>
 
                 <!-- GitHub Card -->
-                <div class="bg-white dark:bg-dark-card p-6 rounded-xl border border-gray-200 dark:border-slate-800 hover:border-slate-900/50 transition-all group shadow-md dark:shadow-none hover:shadow-xl dark:hover:border-white/50">
+                <div class="bg-theme-card dark:bg-theme-dark-card p-6 rounded-xl border border-theme-border dark:border-theme-dark-border hover:border-slate-900/50 transition-all group shadow-md dark:shadow-none hover:shadow-xl dark:hover:border-white/50">
                     <div class="flex justify-between items-start mb-4">
                         <div>
-                            <h3 class="text-lg font-bold text-slate-900 dark:text-white group-hover:text-slate-900 dark:group-hover:text-white transition-colors">GitHub</h3>
-                            <p class="text-sm text-muted dark:text-dark-muted">500+ Contributions</p>
+                            <h3 class="text-lg font-bold text-theme-text dark:text-theme-dark-text group-hover:text-slate-900 dark:group-hover:text-white transition-colors">GitHub</h3>
+                            <p class="text-sm text-theme-muted dark:text-theme-dark-muted">500+ Contributions</p>
                         </div>
                         <div class="bg-slate-900/10 dark:bg-white/10 p-3 rounded-lg text-slate-900 dark:text-white">
                             <i class="fab fa-github"></i>
@@ -285,22 +422,22 @@
                     </div>
                     <div class="grid grid-cols-7 gap-1 mt-4">
                         <!-- Mock contribution graph visual (light theme) -->
-                        <div class="h-2 w-2 rounded-sm bg-gray-200 dark:bg-slate-700"></div><div class="h-2 w-2 rounded-sm bg-green-300"></div><div class="h-2 w-2 rounded-sm bg-green-500"></div><div class="h-2 w-2 rounded-sm bg-gray-200 dark:bg-slate-700"></div><div class="h-2 w-2 rounded-sm bg-green-200"></div><div class="h-2 w-2 rounded-sm bg-green-400"></div><div class="h-2 w-2 rounded-sm bg-gray-200 dark:bg-slate-700"></div>
-                        <div class="h-2 w-2 rounded-sm bg-green-300"></div><div class="h-2 w-2 rounded-sm bg-gray-200 dark:bg-slate-700"></div><div class="h-2 w-2 rounded-sm bg-green-700"></div><div class="h-2 w-2 rounded-sm bg-green-200"></div><div class="h-2 w-2 rounded-sm bg-gray-200 dark:bg-slate-700"></div><div class="h-2 w-2 rounded-sm bg-green-300"></div><div class="h-2 w-2 rounded-sm bg-green-300"></div>
-                        <div class="h-2 w-2 rounded-sm bg-green-200"></div><div class="h-2 w-2 rounded-sm bg-green-300"></div><div class="h-2 w-2 rounded-sm bg-gray-200 dark:bg-slate-700"></div><div class="h-2 w-2 rounded-sm bg-green-100"></div><div class="h-2 w-2 rounded-sm bg-green-600"></div><div class="h-2 w-2 rounded-sm bg-gray-200 dark:bg-slate-700"></div><div class="h-2 w-2 rounded-sm bg-green-300"></div>
+                        <div class="h-2 w-2 rounded-sm bg-theme-border dark:bg-theme-dark-border"></div><div class="h-2 w-2 rounded-sm bg-green-300"></div><div class="h-2 w-2 rounded-sm bg-green-500"></div><div class="h-2 w-2 rounded-sm bg-theme-border dark:bg-theme-dark-border"></div><div class="h-2 w-2 rounded-sm bg-green-200"></div><div class="h-2 w-2 rounded-sm bg-green-400"></div><div class="h-2 w-2 rounded-sm bg-theme-border dark:bg-theme-dark-border"></div>
+                        <div class="h-2 w-2 rounded-sm bg-green-300"></div><div class="h-2 w-2 rounded-sm bg-theme-border dark:bg-theme-dark-border"></div><div class="h-2 w-2 rounded-sm bg-green-700"></div><div class="h-2 w-2 rounded-sm bg-green-200"></div><div class="h-2 w-2 rounded-sm bg-theme-border dark:bg-theme-dark-border"></div><div class="h-2 w-2 rounded-sm bg-green-300"></div><div class="h-2 w-2 rounded-sm bg-green-300"></div>
+                        <div class="h-2 w-2 rounded-sm bg-green-200"></div><div class="h-2 w-2 rounded-sm bg-green-300"></div><div class="h-2 w-2 rounded-sm bg-theme-border dark:bg-theme-dark-border"></div><div class="h-2 w-2 rounded-sm bg-green-100"></div><div class="h-2 w-2 rounded-sm bg-green-600"></div><div class="h-2 w-2 rounded-sm bg-theme-border dark:bg-theme-dark-border"></div><div class="h-2 w-2 rounded-sm bg-green-300"></div>
                     </div>
-                    <div class="mt-4 text-sm text-muted dark:text-dark-muted">
+                    <div class="mt-4 text-sm text-theme-muted dark:text-theme-dark-muted">
                         Current Streak: <span class="text-green-600">14 days</span>
                     </div>
-                     <a href="https://github.com" target="_blank" class="mt-6 block w-full text-center py-2 rounded border border-gray-300 dark:border-slate-700 text-sm hover:bg-gray-100 dark:hover:bg-slate-700 dark:text-dark-text transition-colors">View Profile</a>
+                     <a href="https://github.com/aaronpascalkujur" target="_blank" class="mt-6 block w-full text-center py-2 rounded border border-theme-border dark:border-theme-dark-border text-sm text-theme-text dark:text-theme-dark-text hover:bg-theme-light dark:hover:bg-theme-dark transition-colors">View Profile</a>
                 </div>
 
                  <!-- CodeChef / Other Card -->
-                 <div class="bg-white dark:bg-dark-card p-6 rounded-xl border border-gray-200 dark:border-slate-800 hover:border-orange-500/50 transition-all group shadow-md dark:shadow-none hover:shadow-xl dark:hover:border-orange-500/50">
+                 <div class="bg-theme-card dark:bg-theme-dark-card p-6 rounded-xl border border-theme-border dark:border-theme-dark-border hover:border-orange-500/50 transition-all group shadow-md dark:shadow-none hover:shadow-xl dark:hover:border-orange-500/50">
                     <div class="flex justify-between items-start mb-4">
                         <div>
-                            <h3 class="text-lg font-bold text-slate-900 dark:text-white group-hover:text-orange-600 dark:group-hover:text-orange-500 transition-colors">CodeChef</h3>
-                            <p class="text-sm text-muted dark:text-dark-muted">3 Star Coder</p>
+                            <h3 class="text-lg font-bold text-theme-text dark:text-theme-dark-text group-hover:text-orange-600 dark:group-hover:text-orange-500 transition-colors">CodeChef</h3>
+                            <p class="text-sm text-theme-muted dark:text-theme-dark-muted">3 Star Coder</p>
                         </div>
                         <div class="bg-orange-500/10 p-3 rounded-lg text-orange-600 dark:text-orange-500">
                             <i class="fas fa-laptop-code"></i>
@@ -308,47 +445,47 @@
                     </div>
                     <div class="space-y-2 mt-4">
                         <div class="flex justify-between text-sm">
-                            <span class="text-slate-500 dark:text-dark-muted">Global Rank</span>
-                            <span class="text-slate-800 dark:text-white">12,403</span>
+                            <span class="text-theme-muted dark:text-theme-dark-muted">Global Rank</span>
+                            <span class="text-theme-text dark:text-theme-dark-text">12,403</span>
                         </div>
                         <div class="flex justify-between text-sm">
-                            <span class="text-slate-500 dark:text-dark-muted">Highest Rating</span>
+                            <span class="text-theme-muted dark:text-theme-dark-muted">Highest Rating</span>
                             <span class="text-orange-600 dark:text-orange-400">1640</span>
                         </div>
                         <div class="mt-4 flex gap-2">
-                            <span class="px-2 py-1 bg-gray-100 dark:bg-slate-700 rounded text-xs text-gray-700 dark:text-slate-300">C++</span>
-                            <span class="px-2 py-1 bg-gray-100 dark:bg-slate-700 rounded text-xs text-gray-700 dark:text-slate-300">Java</span>
+                            <span class="px-2 py-1 bg-theme-light dark:bg-theme-dark rounded text-xs text-theme-muted dark:text-theme-dark-muted">C++</span>
+                            <span class="px-2 py-1 bg-theme-light dark:bg-theme-dark rounded text-xs text-theme-muted dark:text-theme-dark-muted">Java</span>
                         </div>
                     </div>
-                    <a href="#" target="_blank" class="mt-6 block w-full text-center py-2 rounded border border-gray-300 dark:border-slate-700 text-sm hover:bg-gray-100 dark:hover:bg-slate-700 dark:text-dark-text transition-colors">View Profile</a>
+                    <a href="#" target="_blank" class="mt-6 block w-full text-center py-2 rounded border border-theme-border dark:border-theme-dark-border text-sm text-theme-text dark:text-theme-dark-text hover:bg-theme-light dark:hover:bg-theme-dark transition-colors">View Profile</a>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Skills Section -->
-    <section id="skills" class="py-20 bg-white dark:bg-dark">
+    <section id="skills" class="py-20 bg-theme-white dark:bg-theme-dark">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-12">Tech Stack</h2>
+            <h2 class="text-3xl font-bold text-theme-text dark:text-theme-dark-text mb-12">Tech Stack</h2>
             
             <div class="space-y-8">
                 <!-- Languages -->
                 <div>
                     <h3 class="text-lg font-semibold text-primary mb-4">Languages & Fundamentals</h3>
                     <div class="flex flex-wrap gap-3">
-                        <span class="px-4 py-2 bg-gray-100 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:border-primary transition-colors cursor-default">
+                        <span class="px-4 py-2 bg-theme-light dark:bg-theme-dark-card border border-theme-border dark:border-theme-dark-border rounded-lg text-theme-muted dark:text-theme-dark-muted hover:text-theme-text dark:hover:text-theme-dark-text hover:border-primary transition-colors cursor-default">
                             <i class="fab fa-java mr-2 text-red-500"></i>Java (DSA)
                         </span>
-                        <span class="px-4 py-2 bg-gray-100 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:border-primary transition-colors cursor-default">
+                        <span class="px-4 py-2 bg-theme-light dark:bg-theme-dark-card border border-theme-border dark:border-theme-dark-border rounded-lg text-theme-muted dark:text-theme-dark-muted hover:text-theme-text dark:hover:text-theme-dark-text hover:border-primary transition-colors cursor-default">
                             <i class="fab fa-python mr-2 text-blue-500"></i>Python
                         </span>
-                        <span class="px-4 py-2 bg-gray-100 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:border-primary transition-colors cursor-default">
+                        <span class="px-4 py-2 bg-theme-light dark:bg-theme-dark-card border border-theme-border dark:border-theme-dark-border rounded-lg text-theme-muted dark:text-theme-dark-muted hover:text-theme-text dark:hover:text-theme-dark-text hover:border-primary transition-colors cursor-default">
                             <i class="fab fa-js mr-2 text-yellow-500"></i>JavaScript
                         </span>
-                        <span class="px-4 py-2 bg-gray-100 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:border-primary transition-colors cursor-default">
+                        <span class="px-4 py-2 bg-theme-light dark:bg-theme-dark-card border border-theme-border dark:border-theme-dark-border rounded-lg text-theme-muted dark:text-theme-dark-muted hover:text-theme-text dark:hover:text-theme-dark-text hover:border-primary transition-colors cursor-default">
                             <i class="fas fa-database mr-2 text-blue-400"></i>SQL
                         </span>
-                        <span class="px-4 py-2 bg-gray-100 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:border-primary transition-colors cursor-default">
+                        <span class="px-4 py-2 bg-theme-light dark:bg-theme-dark-card border border-theme-border dark:border-theme-dark-border rounded-lg text-theme-muted dark:text-theme-dark-muted hover:text-theme-text dark:hover:text-theme-dark-text hover:border-primary transition-colors cursor-default">
                             <i class="fas fa-code mr-2 text-green-500"></i>C++
                         </span>
                     </div>
@@ -358,24 +495,24 @@
                 <div>
                     <h3 class="text-lg font-semibold text-secondary mb-4">Web Development</h3>
                     <div class="flex flex-wrap gap-3">
-                        <span class="px-4 py-2 bg-gray-100 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:border-secondary transition-colors cursor-default">React.js</span>
-                        <span class="px-4 py-2 bg-gray-100 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:border-secondary transition-colors cursor-default">Node.js</span>
-                        <span class="px-4 py-2 bg-gray-100 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:border-secondary transition-colors cursor-default">Tailwind CSS</span>
-                        <span class="px-4 py-2 bg-gray-100 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:border-secondary transition-colors cursor-default">MongoDB</span>
-                        <span class="px-4 py-2 bg-gray-100 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:border-secondary transition-colors cursor-default">HTML5/CSS3</span>
+                        <span class="px-4 py-2 bg-theme-light dark:bg-theme-dark-card border border-theme-border dark:border-theme-dark-border rounded-lg text-theme-muted dark:text-theme-dark-muted hover:text-theme-text dark:hover:text-theme-dark-text hover:border-secondary transition-colors cursor-default">React.js</span>
+                        <span class="px-4 py-2 bg-theme-light dark:bg-theme-dark-card border border-theme-border dark:border-theme-dark-border rounded-lg text-theme-muted dark:text-theme-dark-muted hover:text-theme-text dark:hover:text-theme-dark-text hover:border-secondary transition-colors cursor-default">Node.js</span>
+                        <span class="px-4 py-2 bg-theme-light dark:bg-theme-dark-card border border-theme-border dark:border-theme-dark-border rounded-lg text-theme-muted dark:text-theme-dark-muted hover:text-theme-text dark:hover:text-theme-dark-text hover:border-secondary transition-colors cursor-default">Tailwind CSS</span>
+                        <span class="px-4 py-2 bg-theme-light dark:bg-theme-dark-card border border-theme-border dark:border-theme-dark-border rounded-lg text-theme-muted dark:text-theme-dark-muted hover:text-theme-text dark:hover:text-theme-dark-text hover:border-secondary transition-colors cursor-default">MongoDB</span>
+                        <span class="px-4 py-2 bg-theme-light dark:bg-theme-dark-card border border-theme-border dark:border-theme-dark-border rounded-lg text-theme-muted dark:text-theme-dark-muted hover:text-theme-text dark:hover:text-theme-dark-text hover:border-secondary transition-colors cursor-default">HTML5/CSS3</span>
                     </div>
                 </div>
 
                 <!-- Tools -->
                 <div>
-                    <h3 class="text-lg font-semibold text-slate-800 dark:text-white mb-4">Tools & Coursework</h3>
+                    <h3 class="text-lg font-semibold text-theme-text dark:text-theme-dark-text mb-4">Tools & Coursework</h3>
                     <div class="flex flex-wrap gap-3">
-                        <span class="px-4 py-2 bg-gray-100 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg text-slate-700 dark:text-slate-300">Git/GitHub</span>
-                        <span class="px-4 py-2 bg-gray-100 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg text-slate-700 dark:text-slate-300">VS Code</span>
-                        <span class="px-4 py-2 bg-gray-100 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg text-slate-700 dark:text-slate-300">Postman</span>
-                        <span class="px-4 py-2 bg-gray-100 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg text-slate-700 dark:text-slate-300 border-l-4 border-l-blue-500">Data Structures</span>
-                        <span class="px-4 py-2 bg-gray-100 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg text-slate-700 dark:text-slate-300 border-l-4 border-l-blue-500">OOPs</span>
-                        <span class="px-4 py-2 bg-gray-100 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg text-slate-700 dark:text-slate-300 border-l-4 border-l-blue-500">DBMS</span>
+                        <span class="px-4 py-2 bg-theme-light dark:bg-theme-dark-card border border-theme-border dark:border-theme-dark-border rounded-lg text-theme-muted dark:text-theme-dark-muted">Git/GitHub</span>
+                        <span class="px-4 py-2 bg-theme-light dark:bg-theme-dark-card border border-theme-border dark:border-theme-dark-border rounded-lg text-theme-muted dark:text-theme-dark-muted">VS Code</span>
+                        <span class="px-4 py-2 bg-theme-light dark:bg-theme-dark-card border border-theme-border dark:border-theme-dark-border rounded-lg text-theme-muted dark:text-theme-dark-muted">Postman</span>
+                        <span class="px-4 py-2 bg-theme-light dark:bg-theme-dark-card border border-theme-border dark:border-theme-dark-border rounded-lg text-theme-muted dark:text-theme-dark-muted border-l-4 border-l-primary">Data Structures</span>
+                        <span class="px-4 py-2 bg-theme-light dark:bg-theme-dark-card border border-theme-border dark:border-theme-dark-border rounded-lg text-theme-muted dark:text-theme-dark-muted border-l-4 border-l-primary">OOPs</span>
+                        <span class="px-4 py-2 bg-theme-light dark:bg-theme-dark-card border border-theme-border dark:border-theme-dark-border rounded-lg text-theme-muted dark:text-theme-dark-muted border-l-4 border-l-primary">DBMS</span>
                     </div>
                 </div>
             </div>
@@ -383,25 +520,25 @@
     </section>
 
     <!-- Projects Section -->
-    <section id="projects" class="py-20 bg-light dark:bg-darker">
+    <section id="projects" class="py-20 bg-theme-light dark:bg-theme-darker">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-12">Featured Projects</h2>
+            <h2 class="text-3xl font-bold text-theme-text dark:text-theme-dark-text mb-12">Featured Projects</h2>
             
             <div class="grid md:grid-cols-2 gap-8">
                 <!-- Project 1 -->
-                <div class="group relative bg-white dark:bg-dark-card rounded-xl overflow-hidden border border-gray-200 dark:border-slate-800 hover:border-primary transition-all hover:-translate-y-1 shadow-md dark:shadow-none hover:shadow-xl">
-                    <div class="h-48 overflow-hidden bg-gray-200 dark:bg-slate-700">
+                <div class="group relative bg-theme-card dark:bg-theme-dark-card rounded-xl overflow-hidden border border-theme-border dark:border-theme-dark-border hover:border-primary transition-all hover:-translate-y-1 shadow-md dark:shadow-none hover:shadow-xl">
+                    <div class="h-48 overflow-hidden bg-theme-light dark:bg-theme-dark">
                         <img src="https://placehold.co/600x400/e2e8f0/3b82f6?text=Project+1" alt="Project" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity">
                     </div>
                     <div class="p-6">
                         <div class="flex justify-between items-center mb-3">
-                            <h3 class="text-xl font-bold text-slate-900 dark:text-white">Note Taking App</h3>
+                            <h3 class="text-xl font-bold text-theme-text dark:text-theme-dark-text">Note Taking App</h3>
                             <div class="flex gap-3">
-                                <a href="#" class="text-gray-500 dark:text-slate-400 hover:text-primary"><i class="fab fa-github text-xl"></i></a>
-                                <a href="#" class="text-gray-500 dark:text-slate-400 hover:text-primary"><i class="fas fa-external-link-alt text-xl"></i></a>
+                                <a href="#" class="text-theme-muted dark:text-theme-dark-muted hover:text-primary"><i class="fab fa-github text-xl"></i></a>
+                                <a href="#" class="text-theme-muted dark:text-theme-dark-muted hover:text-primary"><i class="fas fa-external-link-alt text-xl"></i></a>
                             </div>
                         </div>
-                        <p class="text-muted dark:text-dark-muted text-sm mb-4">
+                        <p class="text-theme-muted dark:text-theme-dark-muted text-sm mb-4">
                             A full-stack MERN application to create, edit, and delete notes. Implements JWT authentication for user security and dark mode support.
                         </p>
                         <div class="flex flex-wrap gap-2">
@@ -413,19 +550,19 @@
                 </div>
 
                 <!-- Project 2 -->
-                <div class="group relative bg-white dark:bg-dark-card rounded-xl overflow-hidden border border-gray-200 dark:border-slate-800 hover:border-primary transition-all hover:-translate-y-1 shadow-md dark:shadow-none hover:shadow-xl">
-                    <div class="h-48 overflow-hidden bg-gray-200 dark:bg-slate-700">
+                <div class="group relative bg-theme-card dark:bg-theme-dark-card rounded-xl overflow-hidden border border-theme-border dark:border-theme-dark-border hover:border-primary transition-all hover:-translate-y-1 shadow-md dark:shadow-none hover:shadow-xl">
+                    <div class="h-48 overflow-hidden bg-theme-light dark:bg-theme-dark">
                         <img src="https://placehold.co/600x400/e2e8f0/8b5cf6?text=Project+2" alt="Project" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity">
                     </div>
                     <div class="p-6">
                         <div class="flex justify-between items-center mb-3">
-                            <h3 class="text-xl font-bold text-slate-900 dark:text-white">Sorting Visualizer</h3>
+                            <h3 class="text-xl font-bold text-theme-text dark:text-theme-dark-text">Sorting Visualizer</h3>
                             <div class="flex gap-3">
-                                <a href="#" class="text-gray-500 dark:text-slate-400 hover:text-primary"><i class="fab fa-github text-xl"></i></a>
-                                <a href="#" class="text-gray-500 dark:text-slate-400 hover:text-primary"><i class="fas fa-external-link-alt text-xl"></i></a>
+                                <a href="#" class="text-theme-muted dark:text-theme-dark-muted hover:text-primary"><i class="fab fa-github text-xl"></i></a>
+                                <a href="#" class="text-theme-muted dark:text-theme-dark-muted hover:text-primary"><i class="fas fa-external-link-alt text-xl"></i></a>
                             </div>
                         </div>
-                        <p class="text-muted dark:text-dark-muted text-sm mb-4">
+                        <p class="text-theme-muted dark:text-theme-dark-muted text-sm mb-4">
                             A web tool to visualize how sorting algorithms (Bubble, Merge, Quick) work in real-time. Built to understand algorithm efficiency better.
                         </S>
                         <div class="flex flex-wrap gap-2">
@@ -440,22 +577,22 @@
     </section>
 
     <!-- Education & Experience -->
-    <section id="education" class="py-20 bg-white dark:bg-dark">
+    <section id="education" class="py-20 bg-theme-white dark:bg-theme-dark">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="text-3xl font-bold text-slate-900 dark:text-white mb-12 flex items-center">
+            <h2 class="text-3xl font-bold text-theme-text dark:text-theme-dark-text mb-12 flex items-center">
                 <i class="fas fa-graduation-cap text-primary mr-3"></i> Education
             </h2>
 
-            <div class="relative border-l border-gray-200 dark:border-slate-800 ml-3 space-y-12">
+            <div class="relative border-l border-theme-border dark:border-theme-dark-border ml-3 space-y-12">
                 <!-- Education Item 1 -->
                 <div class="relative pl-8 group">
                     <div class="absolute -left-[5px] top-2 h-3 w-3 rounded-full bg-primary group-hover:scale-125 transition-transform"></div>
                     <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-2">
-                        <h3 class="text-xl font-bold text-slate-900 dark:text-white">Bachelor of Technology (CS)</h3>
+                        <h3 class="text-xl font-bold text-theme-text dark:text-theme-dark-text">Bachelor of Technology (CS)</h3>
                         <span class="text-sm text-primary font-mono bg-primary/10 px-2 py-1 rounded">2023 - Present</span>
                     </div>
-                    <h4 class="text-lg text-slate-700 dark:text-slate-300">XYZ University</h4>
-                    <p class="text-muted dark:text-dark-muted mt-2 text-sm">
+                    <h4 class="text-lg text-theme-text dark:text-theme-dark-muted">XYZ University</h4>
+                    <p class="text-theme-muted dark:text-theme-dark-muted mt-2 text-sm">
                         Current CGPA: 8.5/10 (Upto 3rd Sem) <br>
                         Relevant Coursework: Data Structures, Algorithms, Object Oriented Programming, Database Management Systems.
                     </S>
@@ -463,42 +600,124 @@
 
                 <!-- Education Item 2 (High School) -->
                 <div class="relative pl-8 group">
-                    <div class="absolute -left-[5px] top-2 h-3 w-3 rounded-full bg-gray-400 dark:bg-slate-600 group-hover:scale-125 transition-transform"></div>
+                    <div class="absolute -left-[5px] top-2 h-3 w-3 rounded-full bg-theme-muted dark:bg-theme-dark-muted group-hover:scale-125 transition-transform"></div>
                     <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-2">
-                        <h3 class="text-xl font-bold text-slate-900 dark:text-white">Senior Secondary (12th)</h3>
-                        <span class="text-sm text-muted dark:text-dark-muted font-mono">2023</span>
+                        <h3 class="text-xl font-bold text-theme-text dark:text-theme-dark-text">Senior Secondary (12th)</h3>
+                        <span class="text-sm text-theme-muted dark:text-theme-dark-muted font-mono">2023</span>
                     </div>
-                    <h4 class="text-lg text-slate-700 dark:text-slate-300">ABC Public School</h4>
-                    <p class="text-muted dark:text-dark-muted mt-2 text-sm">
+                    <h4 class="text-lg text-theme-text dark:text-theme-dark-muted">ABC Public School</h4>
+                    <p class="text-theme-muted dark:text-theme-dark-muted mt-2 text-sm">
                         Major: Science (PCM) | Grade: 92%
                     </p>
                 </div>
             </div>
             
             <!-- Hackathons / Experience Mini Section -->
-            <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-8 mt-16 flex items-center">
+            <h2 class="text-2xl font-bold text-theme-text dark:text-theme-dark-text mb-8 mt-16 flex items-center">
                 <i class="fas fa-trophy text-yellow-500 mr-3"></i> Achievements & Extra-Curriculars
             </h2>
             <div class="grid md:grid-cols-2 gap-4">
-                <div class="bg-white dark:bg-dark-card p-4 rounded-lg border border-gray-200 dark:border-slate-800 shadow-sm dark:shadow-none">
-                    <h3 class="font-bold text-slate-900 dark:text-white text-lg">Smart India Hackathon</h3>
-                    <p class="text-sm text-muted dark:text-dark-muted">Participant - 2024</p>
-                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-2">Built a solution for waste management using IoT and Web Dashboard.</p>
+                <div class="bg-theme-card dark:bg-theme-dark-card p-4 rounded-lg border border-theme-border dark:border-theme-dark-border shadow-sm dark:shadow-none">
+                    <h3 class="font-bold text-theme-text dark:text-theme-dark-text text-lg">Smart India Hackathon</h3>
+                    <p class="text-sm text-theme-muted dark:text-theme-dark-muted">Participant - 2024</p>
+                    <p class="text-xs text-theme-muted dark:text-theme-dark-muted/75 mt-2">Built a solution for waste management using IoT and Web Dashboard.</p>
                 </div>
-                <div class="bg-white dark:bg-dark-card p-4 rounded-lg border border-gray-200 dark:border-slate-800 shadow-sm dark:shadow-none">
-                    <h3 class="font-bold text-slate-900 dark:text-white text-lg">Coding Club Member</h3>
-                    <p class="text-sm text-muted dark:text-dark-muted">Core Team</p>
-                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-2">Organizing coding contests and conducting C++ workshops for juniors.</p>
+                <div class="bg-theme-card dark:bg-theme-dark-card p-4 rounded-lg border border-theme-border dark:border-theme-dark-border shadow-sm dark:shadow-none">
+                    <h3 class="font-bold text-theme-text dark:text-theme-dark-text text-lg">Coding Club Member</h3>
+                    <p class="text-sm text-theme-muted dark:text-theme-dark-muted">Core Team</p>
+                    <p class="text-xs text-theme-muted dark:text-theme-dark-muted/75 mt-2">Organizing coding contests and conducting C++ workshops for juniors.</p>
                 </div>
             </div>
 
         </div>
     </section>
 
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 bg-theme-light dark:bg-theme-darker">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            
+            <h2 class="text-3xl font-bold text-theme-text dark:text-theme-dark-text mb-6">
+                Get In Touch
+            </h2>
+            
+            <p class="text-lg text-theme-muted dark:text-theme-dark-muted mb-10 max-w-xl mx-auto">
+                I'm always open to discussing new projects, internship opportunities, or just to chat. Feel free to reach out!
+            </p>
+    
+            <div class="flex justify-center items-center gap-6">
+                <!-- LinkedIn -->
+                <a href="https://linkedin.com/in/your-profile" target="_blank" class="group">
+                    <div class="w-16 h-16 bg-theme-white dark:bg-theme-dark-card border border-theme-border dark:border-theme-dark-border rounded-full flex items-center justify-center transition-all duration-300 group-hover:bg-blue-600 group-hover:border-blue-600 shadow-md group-hover:shadow-lg">
+                        <i class="fab fa-linkedin text-3xl text-blue-600 transition-all duration-300 group-hover:text-white"></i>
+                    </div>
+                    <p class="text-sm text-theme-muted dark:text-theme-dark-muted mt-2 group-hover:text-primary">LinkedIn</p>
+                </a>
+    
+                <!-- GitHub -->
+                <a href="https://github.com/aaronpascalkujur" target="_blank" class="group">
+                    <div class="w-16 h-16 bg-theme-white dark:bg-theme-dark-card border border-theme-border dark:border-theme-dark-border rounded-full flex items-center justify-center transition-all duration-300 group-hover:bg-slate-800 dark:group-hover:bg-white group-hover:border-slate-800 dark:group-hover:border-white shadow-md group-hover:shadow-lg">
+                        <i class="fab fa-github text-3xl text-slate-800 dark:text-white transition-all duration-300 group-hover:text-white dark:group-hover:text-slate-800"></i>
+                    </div>
+                    <p class="text-sm text-theme-muted dark:text-theme-dark-muted mt-2 group-hover:text-slate-800 dark:group-hover:text-white">GitHub</p>
+                </a>
+    
+                <!-- Email -->
+                <a href="mailto:youremail@gmail.com" class="group">
+                    <div class="w-16 h-16 bg-theme-white dark:bg-theme-dark-card border border-theme-border dark:border-theme-dark-border rounded-full flex items-center justify-center transition-all duration-300 group-hover:bg-red-500 group-hover:border-red-500 shadow-md group-hover:shadow-lg">
+                        <i class="fas fa-envelope text-3xl text-red-500 transition-all duration-300 group-hover:text-white"></i>
+                    </div>
+                    <p class="text-sm text-theme-muted dark:text-theme-dark-muted mt-2 group-hover:text-red-500">Email</le>
+                </a>
+            </div>
+            
+        </div>
+    </section>
+
     <!-- Footer -->
-    <footer class="py-8 border-t border-gray-200 dark:border-slate-800 text-center text-gray-500 dark:text-slate-500 text-sm bg-light dark:bg-darker">
-        <p>Built with HTML, Tailwind & Coffee ☕</p>
+    <footer class="py-12 border-t border-theme-border dark:border-theme-dark-border text-center bg-theme-light dark:bg-theme-darker">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Social Icons -->
+            <div class="flex justify-center gap-6 mb-6">
+                <a href="https://linkedin.com/in/your-profile" target="_blank" class="text-theme-muted dark:text-theme-dark-muted hover:text-primary text-2xl transition-colors">
+                    <i class="fab fa-linkedin"></i>
+                </a>
+                <a href="https://github.com/aaronpascalkujur" target="_blank" class="text-theme-muted dark:text-theme-dark-muted hover:text-slate-900 dark:hover:text-white text-2xl transition-colors">
+                    <i class="fab fa-github"></i>
+                </a>
+                <a href="https://leetcode.com/u/aaronpascalkujur/" target="_blank" class="text-theme-muted dark:text-theme-dark-muted hover:text-yellow-500 text-2xl transition-colors">
+                    <i class="fas fa-code"></i>
+                </a>
+                <a href="mailto:youremail@gmail.com" class="text-theme-muted dark:text-theme-dark-muted hover:text-red-500 text-2xl transition-colors">
+                    <i class="fas fa-envelope"></i>
+                </a>
+            </div>
+            
+            <!-- Copyright Text -->
+            <p class="text-theme-muted dark:text-theme-dark-muted text-sm">
+                Built with HTML, Tailwind & Coffee ☕
+                <br>
+                © 2024 Aaron Pascal Kujur. All Rights Reserved.
+            </p>
+        </div>
     </footer>
 
+    <!-- REMOVED Scroll Spy Active State Script -->
+    <script>
+        // Closes the theme dropdown if you click outside of it
+        document.addEventListener('DOMContentLoaded', (event) => {
+            window.addEventListener('click', function(e) {
+                const themeDropdown = document.getElementById('theme-dropdown');
+                if (!themeDropdown) return; // Exit if dropdown doesn't exist
+                
+                const themeToggle = themeDropdown.previousElementSibling;
+                
+                if (!themeDropdown.classList.contains('hidden')) {
+                   if (!themeToggle.contains(e.target) && !themeDropdown.contains(e.target)) {
+                        themeDropdown.classList.add('hidden');
+                   }
+                }
+            });
+        });
+    </script>
 </body>
 </html>
